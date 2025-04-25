@@ -89,7 +89,7 @@ async function getTerminalOutputLifeCycle(
   const overridesWithoutHidden = { ...overrides };
   delete overridesWithoutHidden['__overrides_unparsed__'];
 
-  if (isTuiEnabled(nxJson)) {
+  if (isTuiEnabled()) {
     const interceptedNxCloudLogs: (string | Uint8Array<ArrayBufferLike>)[] = [];
 
     const createPatchedConsoleMethod = (
