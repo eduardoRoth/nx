@@ -10,6 +10,8 @@ use ratatui::{
 };
 use std::any::Any;
 
+use crate::native::tui::utils::is_in_vscode;
+
 use super::{Component, Frame};
 
 pub struct HelpPopup {
@@ -88,7 +90,7 @@ impl HelpPopup {
             ])
             .split(popup_layout[1])[1];
 
-        let keybindings = vec![
+        let mut keybindings = vec![
             // Misc
             ("?", "Toggle this popup"),
             ("<ctrl>+c", "Quit the TUI"),
@@ -120,6 +122,11 @@ impl HelpPopup {
             ("i", "Interact with a continuous task when it is in focus"),
             ("<ctrl>+z", "Stop interacting with a continuous task"),
         ];
+
+        if is_in_vscode() {
+            // add Copilot specific keybindings for AI assistance
+            keybindings.extend([("", ""), ("a", "Allow Copilot to assist with this task")]);
+        }
 
         let mut content: Vec<Line> = vec![
             // Welcome text
