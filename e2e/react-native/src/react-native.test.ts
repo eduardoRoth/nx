@@ -11,6 +11,7 @@ import {
   runE2ETests,
   updateFile,
   ensureCypressInstallation,
+  ensurePlaywrightBrowsersInstallation,
 } from 'e2e/utils';
 
 describe('@nx/react-native', () => {
@@ -22,6 +23,7 @@ describe('@nx/react-native', () => {
   beforeAll(() => {
     proj = newProject();
     ensureCypressInstallation();
+    ensurePlaywrightBrowsersInstallation();
     appName = uniq('app');
     runCLI(
       `generate @nx/react-native:app ${appName} --install=false --e2eTestRunner=cypress --no-interactive --unitTestRunner=jest --linter=eslint`
