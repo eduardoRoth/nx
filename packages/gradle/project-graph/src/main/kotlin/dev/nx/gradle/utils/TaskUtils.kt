@@ -4,6 +4,8 @@ import dev.nx.gradle.data.Dependency
 import dev.nx.gradle.data.ExternalDepData
 import dev.nx.gradle.data.ExternalNode
 import org.gradle.api.Task
+import org.gradle.api.tasks.Exec
+import org.gradle.api.tasks.JavaExec
 
 /**
  * Process a task and convert it into target Going to populate:
@@ -26,6 +28,11 @@ fun processTask(
   logger.info("NxProjectReportTask: process $task for $projectRoot")
   val target = mutableMapOf<String, Any?>()
   target["cache"] = true // set cache to be always true
+
+  val continuous = isContinuous(task)
+  if (continuous) {
+    target["continuous"] = true
+  }
 
   // process inputs
   val inputs = getInputsForTask(task, projectRoot, workspaceRoot, externalNodes)
@@ -299,4 +306,8 @@ fun replaceRootInPath(p: String, projectRoot: String, workspaceRoot: String): St
     return path
   }
   return null
+}
+
+fun isContinuous(task: Task): Boolean {
+  return task is JavaExec || task is Exec
 }
