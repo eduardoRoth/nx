@@ -10,6 +10,7 @@ import {
   checkFilesExist,
   runE2ETests,
   updateFile,
+  ensureCypressInstallation,
 } from 'e2e/utils';
 
 describe('@nx/react-native', () => {
@@ -20,9 +21,10 @@ describe('@nx/react-native', () => {
 
   beforeAll(() => {
     proj = newProject();
+    ensureCypressInstallation();
     appName = uniq('app');
     runCLI(
-      `generate @nx/react-native:app ${appName} --install=false --no-interactive --unitTestRunner=jest --linter=eslint`
+      `generate @nx/react-native:app ${appName} --install=false --e2eTestRunner=cypress --no-interactive --unitTestRunner=jest --linter=eslint`
     );
     libName = uniq('lib');
     runCLI(

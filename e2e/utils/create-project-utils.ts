@@ -63,6 +63,7 @@ const nxPackages = [
   `@nx/webpack`,
   `@nx/react-native`,
   `@nx/expo`,
+  `@nx/detox`,
 ] as const;
 
 type NxPackage = (typeof nxPackages)[number];

@@ -13,7 +13,9 @@ describe('@nx/detox', () => {
   let expoAppName: string;
 
   beforeAll(() => {
-    project = newProject();
+    project = newProject({
+      packages: ['@nx/detox', '@nx/react-native', '@nx/expo'],
+    });
     reactNativeAppName = uniq('appTest');
     expoAppName = uniq('expoAppTest');
     runCLI(
