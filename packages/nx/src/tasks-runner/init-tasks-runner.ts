@@ -152,7 +152,8 @@ async function createOrchestrator(
     false,
     daemonClient,
     undefined,
-    taskGraphForHashing
+    taskGraphForHashing,
+    true
   );
 
   await orchestrator.init();

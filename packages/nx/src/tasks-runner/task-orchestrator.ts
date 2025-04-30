@@ -98,7 +98,8 @@ export class TaskOrchestrator {
     private readonly bail: boolean,
     private readonly daemon: DaemonClient,
     private readonly outputStyle: string,
-    private readonly taskGraphForHashing: TaskGraph = taskGraph
+    private readonly taskGraphForHashing: TaskGraph = taskGraph,
+    private readonly isDTE = false
   ) {}
 
   async init() {
@@ -715,7 +716,7 @@ export class TaskOrchestrator {
       if (this.initializingTaskIds.has(task.id)) {
         await new Promise<void>((res) => {
           runningTask.onExit((code) => {
-            if (!this.tuiEnabled) {
+            if (!this.tuiEnabled && !this.isDTE) {
               if (code > 128) {
                 process.exit(code);
               }
