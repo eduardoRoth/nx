@@ -44,17 +44,44 @@ export default async function gradleBatch(
       args.push(...overrides.__overrides_unparsed__);
     }
 
-    const gradlewTasksToRun: Record<string, GradleTask> = Object.entries(
-      taskGraph.tasks
-    ).reduce((gradlewTasksToRun, [taskId, task]) => {
-      const gradlewTaskName = inputs[task.id].taskName;
-      const testClassName = inputs[task.id].testClassName;
-      gradlewTasksToRun[taskId] = {
-        taskName: gradlewTaskName,
-        testClassName: testClassName,
-      };
-      return gradlewTasksToRun;
-    }, {});
+    let dependsOn = [];
+    const gradlewTaskIdsToRun = Object.keys(taskGraph.tasks);
+    const gradlewTasksToRun: Record<string, GradleTask> =
+      gradlewTaskIdsToRun.reduce((gradlewTasksToRun, taskId) => {
+        const task = taskGraph.tasks[taskId];
+        const gradlewTaskName = inputs[task.id].taskName;
+        const testClassName = inputs[task.id].testClassName;
+        gradlewTasksToRun[taskId] = {
+          taskName: gradlewTaskName,
+          testClassName: testClassName,
+        };
+        const taskDeps = context.projectGraph.nodes[
+          task.target.project
+        ]?.data?.targets?.[task.target.target]?.dependsOn
+          ?.map((dep) => {
+            if (typeof dep === 'string') {
+              return dep;
+            }
+            if (typeof dep === 'object' && dep.target) {
+              return dep.target;
+            }
+            return null;
+          })
+          ?.filter((taskId) => gradlewTaskIdsToRun.indexOf(taskId) === -1);
+        if (taskDeps?.length) {
+          dependsOn = [...dependsOn, ...taskDeps];
+        }
+        return gradlewTasksToRun;
+      }, {});
+
+    // remove duplicates
+    dependsOn = [...new Set(dependsOn)];
+    if (dependsOn.length) {
+      dependsOn.forEach((taskId) => {
+        args.push('--exclude-task', taskId);
+      });
+    }
+
     const gradlewBatchStart = performance.mark(`gradlew-batch:start`);
     const batchResults = execSync(
       `java -jar ${batchRunnerPath} --tasks='${JSON.stringify(

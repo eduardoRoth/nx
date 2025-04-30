@@ -22,6 +22,17 @@ export default async function gradleExecutor(
   if (options.testClassName) {
     args.push(`--tests`, options.testClassName);
   }
+  const dependsOn =
+    context.projectGraph.nodes[context.projectName]?.data?.targets?.[
+      context.targetName
+    ]?.dependsOn;
+  if (dependsOn?.length) {
+    dependsOn
+      .filter((dep) => typeof dep === 'string')
+      .forEach((dep) => {
+        args.push(`--exclude-task`, dep);
+      });
+  }
   try {
     await runCommandsImpl(
       {

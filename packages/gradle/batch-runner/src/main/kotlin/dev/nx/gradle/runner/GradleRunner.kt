@@ -30,6 +30,7 @@ fun runTasksInParallel(
     addAll(listOf("--info", "--continue", "--parallel", "--build-cache"))
     addAll(additionalArgs.split(" ").filter { it.isNotBlank() })
   }
+  logger.info("🏳️ Args: ${args.joinToString(", ")}")
 
   val taskNames = tasks.values.map { it.taskName }.distinct()
 
