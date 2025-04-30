@@ -154,7 +154,10 @@ impl std::str::FromStr for TaskStatus {
 
 #[napi]
 pub fn parse_task_status(string_status: String) -> napi::Result<TaskStatus> {
-    string_status.as_str().parse().map_err(napi::Error::from_reason)
+    string_status
+        .as_str()
+        .parse()
+        .map_err(napi::Error::from_reason)
 }
 
 /// A list component that displays and manages tasks in a terminal UI.
@@ -966,7 +969,10 @@ impl TasksList {
             self.sort_tasks();
         }
         for (i, data) in self.terminal_pane_data.iter_mut().enumerate() {
-            if self.pane_tasks.as_ref()[i].clone().is_some_and(|id| id == task_id) {
+            if self.pane_tasks.as_ref()[i]
+                .clone()
+                .is_some_and(|id| id == task_id)
+            {
                 let in_progress = status == TaskStatus::InProgress;
                 data.can_be_interactive = in_progress;
                 if !in_progress {
@@ -974,7 +980,6 @@ impl TasksList {
                 }
             }
         }
-        
     }
 
     pub fn end_tasks(&mut self, task_results: Vec<TaskResult>) {
