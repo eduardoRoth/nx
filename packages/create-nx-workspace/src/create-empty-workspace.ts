@@ -71,6 +71,7 @@ export async function createEmptyWorkspace<T extends CreateWorkspaceOptions>(
     );
   } catch (e) {
     workspaceSetupSpinner.fail();
+    console.error(e);
     if (e instanceof Error) {
       output.error({
         title: `Failed to create a workspace.`,
