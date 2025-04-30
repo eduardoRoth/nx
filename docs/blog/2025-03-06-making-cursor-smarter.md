@@ -15,6 +15,7 @@ pinned: true
 - **Making Cursor Smarter with an MCP Server For Nx Monorepos**
 - [Nx MCP Now Available for VS Code Copilot](/blog/nx-mcp-vscode-copilot)
 - [Nx and AI: Why They Work so Well Together](/blog/nx-and-ai-why-they-work-together)
+- [The MCP Server That Fixes CI For You](/blog/nx-mcp-ci-fixes)
 
 {% /callout %}
 

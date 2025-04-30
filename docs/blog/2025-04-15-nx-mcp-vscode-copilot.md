@@ -14,6 +14,7 @@ youtubeUrl: https://youtu.be/dRQq_B1HSLA
 - [Making Cursor Smarter with an MCP Server For Nx Monorepos](/blog/nx-made-cursor-smarter)
 - **Nx MCP Now Available for VS Code Copilot**
 - [Nx and AI: Why They Work so Well Together](/blog/nx-and-ai-why-they-work-together)
+- [The MCP Server That Fixes CI For You](/blog/nx-mcp-ci-fixes)
 
 {% /callout %}
 
